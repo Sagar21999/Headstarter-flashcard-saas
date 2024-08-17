@@ -7,6 +7,7 @@ import {
   Button,
   Typography,
   Box,
+  Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Grid, Card, CardContent
 } from '@mui/material'
 
 export default function Generate() {
@@ -78,7 +79,9 @@ const saveFlashcards = async () => {
   }
 
   return (
+    
     <Container maxWidth="md">
+        
       <Box sx={{ my: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
           Generate Flashcards
@@ -102,6 +105,8 @@ const saveFlashcards = async () => {
           Generate Flashcards
         </Button>
       </Box>
+      
+      {/* We'll add flashcard display here */}
       {flashcards.length > 0 && (
   <Box sx={{ mt: 4 }}>
     <Typography variant="h5" component="h2" gutterBottom>
@@ -123,6 +128,7 @@ const saveFlashcards = async () => {
     </Grid>
   </Box>
 )}
+
 {flashcards.length > 0 && (
   <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
     <Button variant="contained" color="primary" onClick={handleOpenDialog}>
@@ -154,8 +160,7 @@ const saveFlashcards = async () => {
     </Button>
   </DialogActions>
 </Dialog>
-      
-      {/* We'll add flashcard display here */}
     </Container>
+    
   )
 }
