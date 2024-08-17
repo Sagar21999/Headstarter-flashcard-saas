@@ -7,14 +7,22 @@ import {
   Button,
   Typography,
   Box,
-  Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Grid, Card, CardContent
+  Dialog, DialogContent, DialogTitle, DialogContentText, DialogActions, Grid, Card, CardContent,
+  CardActionArea
 } from '@mui/material'
+import { useUser } from '@clerk/nextjs'
+import db from '@/firebase'
+import { doc,getDoc,collection,writeBatch,setDoc } from 'firebase/firestore'
 
 export default function Generate() {
-  const [text, setText] = useState('')
-  const [flashcards, setFlashcards] = useState([])
 
-  const [setName, setSetName] = useState('')
+const {isloaded, isSignedIn, user} = useUser()
+
+const [flipped, setFlipped] = useState('')
+const [text, setText] = useState('')
+const [flashcards, setFlashcards] = useState([])
+
+const [setName, setSetName] = useState('')
 const [dialogOpen, setDialogOpen] = useState(false)
 
 const handleOpenDialog = () => setDialogOpen(true)
@@ -54,6 +62,12 @@ const saveFlashcards = async () => {
     }
   }
 
+  const handleCardClick = (id) =>{
+    setFlipped((prev) => ({
+      ...prev,
+      [id] : !prev[id],
+    }))
+  }
   const handleSubmit = async () => {
     if (!text.trim()) {
       alert('Please enter some text to generate flashcards.')
@@ -77,6 +91,15 @@ const saveFlashcards = async () => {
       alert('An error occurred while generating flashcards. Please try again.')
     }
   }
+
+  // const handleSubmit = async () =>{
+  //   fetch('/api/generate', {
+  //            method: 'POST',
+  //            body: text,
+  //          })
+  //          .then((res) => res.json())
+  //          .then((data) => setFlashcards(data))
+  // }
 
   return (
     
@@ -116,26 +139,72 @@ const saveFlashcards = async () => {
       {flashcards.map((flashcard, index) => (
         <Grid item xs={12} sm={6} md={4} key={index}>
           <Card>
+            <CardActionArea onClick={() =>handleCardClick(index)}>
             <CardContent>
-              <Typography variant="h6">Front:</Typography>
-              <Typography>{flashcard.front}</Typography>
-              <Typography variant="h6" sx={{ mt: 2 }}>Back:</Typography>
-              <Typography>{flashcard.back}</Typography>
+              <Box
+              sx={{
+                perspective:'1000px',
+                '& > div': {
+                  transition : 'transform 0.5s',
+                  transformStyle : 'preserve-3d',
+                  position:'relative',
+                  width: ' 100%',
+                  height: '200px',
+                  boxShadow :'0 4px 8px 0 rgba(0,0,0,0.2)',
+                  transform : flipped[index]
+                  ? 'rotateY(180deg)'
+                  : 'rotateY(0deg)',
+                },
+                '& > div > div': {
+                  
+                  position:'absolute',
+                  width: ' 100%',
+                  height: '100%',
+                  backfaceVisibility : 'hidden',
+                  display : 'flex',
+                  justifyContent:'center',
+                  alignItems:'center',
+                  padding:'5',
+                  boxSizing:'border-box'
+                },
+                '& > div > div:nth-of-type(2)': {
+                 transform:'rotateY(180deg)',
+                },
+              }}>
+              <div>
+              {/* <Typography variant="h6">Front:</Typography> */}
+              <div>
+                <Typography variant='h5' component="div">
+                  {flashcard.front}
+                  </Typography>
+                  </div>
+              {/* <Typography variant="h6" sx={{ mt: 2 }}>Back:</Typography> */}
+              <div>
+                <Typography  variant='h5' component="div">{flashcard.back}</Typography>
+              </div>
+              </div>
+              </Box>
             </CardContent>
+            </CardActionArea>
           </Card>
         </Grid>
       ))}
     </Grid>
+    <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
+    <Button variant="contained" color="primary" onClick={handleOpenDialog}>
+      Save Flashcards
+    </Button>
+  </Box>
   </Box>
 )}
 
-{flashcards.length > 0 && (
+{/* {flashcards.length > 0 && (
   <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
     <Button variant="contained" color="primary" onClick={handleOpenDialog}>
       Save Flashcards
     </Button>
   </Box>
-)}
+)} */}
 
 <Dialog open={dialogOpen} onClose={handleCloseDialog}>
   <DialogTitle>Save Flashcard Set</DialogTitle>

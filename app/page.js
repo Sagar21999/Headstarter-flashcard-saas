@@ -1,10 +1,16 @@
-import { Container, Typography, AppBar,Toolbar, SignedIn, SignedOut,Button,UserButton , Box, Grid} from "@mui/material";
+import { Container, Typography, AppBar,Toolbar, Button , Box, Grid} from "@mui/material";
 import Image from "next/image";
 import getStripe from "@/utils/get-stripe";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import Head from "next/head";
 
 export default function Home() {
 return(
-  <Container>
+  <Container maxWidth="100vw">
+    <Head>
+      <title>Flashcard Saas</title>
+      <meta name="description" content="Create flashcard from your text" />
+    </Head>
 
 <AppBar position="static">
   <Toolbar>
@@ -20,6 +26,7 @@ return(
     </SignedIn>
   </Toolbar>
 </AppBar>
+
 <Box sx={{textAlign: 'center', my: 4}}>
   <Typography variant="h2" component="h1" gutterBottom>
     Welcome to Flashcard SaaS
@@ -30,9 +37,9 @@ return(
   <Button variant="contained" color="primary" sx={{mt: 2, mr: 2}} href="/generate">
     Get Started
   </Button>
-  <Button variant="outlined" color="primary" sx={{mt: 2}}>
+  {/* <Button variant="outlined" color="primary" sx={{mt: 2}}>
     Learn More
-  </Button>
+  </Button> */}
 </Box>
 <Box sx={{my: 6}}>
   <Typography variant="h4" component="h2" gutterBottom>Features</Typography>
@@ -45,16 +52,17 @@ return(
         Simply input text and let our AI take care of the rest.
       </Typography>
     </Grid><Grid item xs ={12} md ={4}>
-      <Typography variant="h6">Easy Text Input</Typography>
+      <Typography variant="h6">Accessible Webapp</Typography>
       <Typography>
         {' '}
-        Simply input text and let our AI take care of the rest.
+        Access your generated flashcards on the go. From any device and any where. 
+
       </Typography>
     </Grid><Grid item xs ={12} md ={4}>
-      <Typography variant="h6">Easy Text Input</Typography>
+      <Typography variant="h6">Save Flashcards</Typography>
       <Typography>
         {' '}
-        Simply input text and let our AI take care of the rest.
+        Save the generated flashcards in the click of a button.
       </Typography>
     </Grid>
   </Grid>
@@ -75,7 +83,7 @@ return(
       <Typography variant="h6">5$/month</Typography>
       <Typography>
         {' '}
-        Get access to limited feautures
+        Get access to limited features
       </Typography>
       <Button variant="contained" color="primary" sx={{mt:2}}>Get Basic</Button>
       </Box>
@@ -93,7 +101,7 @@ return(
       <Typography variant="h6">10$/month</Typography>
       <Typography>
         {' '}
-        Get access to Plus feautures
+        Get access to Plus features
       </Typography>
       <Button variant="contained" color="primary" sx={{mt:2}}>Get Plus</Button>
       </Box>
@@ -111,7 +119,7 @@ return(
       <Typography variant="h6">15$/month</Typography>
       <Typography>
         {' '}
-        Get access to unlimited feautures
+        Get access to unlimited features
       </Typography>
       <Button variant="contained" color="primary" sx={{mt:2}}>Get Pro</Button>
       </Box>

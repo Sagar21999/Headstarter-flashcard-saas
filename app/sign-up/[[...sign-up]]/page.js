@@ -14,12 +14,18 @@ export default function SignUpPage() {
       Flashcard SaaS
     </Typography>
     <Button color="inherit">
-      <Link href="/login" passHref>
+      <Link href="/sign-in" passHref>
         Login
+      </Link>
+    </Button>
+    <Button color="inherit">
+      <Link href="/" passHref>
+        Home
       </Link>
     </Button>
   </Toolbar>
 </AppBar>
+
 <Box
   display="flex"
   flexDirection="column"
