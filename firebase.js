@@ -7,7 +7,7 @@ const firebaseConfig = {
     projectId: "headstarter-flashcard-saas",
     storageBucket: "headstarter-flashcard-saas.appspot.com",
     messagingSenderId: "1016603248888",
-    appId: "1:1016603248888:web:9ac7aaa99e1705958d930d"
+    appId: "1:1016603248888:web:b193639fa9400bc58d930d"
 };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);

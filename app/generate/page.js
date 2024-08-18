@@ -13,6 +13,7 @@ import {
 import { useUser } from '@clerk/nextjs'
 import db from '@/firebase'
 import { doc,getDoc,collection,writeBatch,setDoc } from 'firebase/firestore'
+import { Router, useRouter } from 'next/navigation'
 
 export default function Generate() {
 
@@ -27,12 +28,35 @@ const [dialogOpen, setDialogOpen] = useState(false)
 
 const handleOpenDialog = () => setDialogOpen(true)
 const handleCloseDialog = () => setDialogOpen(false)
+const router = useRouter()
 
 const saveFlashcards = async () => {
+  console.log(setName)
     if (!setName.trim()) {
       alert('Please enter a name for your flashcard set.')
       return
     }
+
+    // const batch = writeBatch(db)
+    // const userDocRef = doc(collection(db,'users'),user.id)
+
+    // const docSnap = await getDoc(userDocRef)
+    // console.log(docSnap.exists())
+
+
+    // if(docSnap.exists()){
+    //   const collections = docSnap.data().flashcards || []
+    //   console.log(collections)
+    //   if(collections.find((f) => f.name === name)){
+    //     alert('flashcard collection with the same name already exists.')
+    //       return
+        
+    //   }
+    //   else{
+    //     collections.push({name})
+    //     batch.set(userDocRef, {flashcards:collections}, {merge:true})
+    //   }
+    // }
   
     try {
       const userDocRef = doc(collection(db, 'users'), user.id)
@@ -56,6 +80,7 @@ const saveFlashcards = async () => {
       alert('Flashcards saved successfully!')
       handleCloseDialog()
       setSetName('')
+      router.push("/flashcards")
     } catch (error) {
       console.error('Error saving flashcards:', error)
       alert('An error occurred while saving flashcards. Please try again.')
